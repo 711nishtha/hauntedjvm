@@ -29,6 +29,47 @@ public final class Timeline {
         return new Timeline(new EventLog(), new SnapshotStore(), 0);
     }
 
+    /**
+     * Rebuilds a complete timeline, checkpoints included, from nothing but an event log.
+     *
+     * <p>This is replay in its purest form: start from the empty world, apply every recorded
+     * event in order, and take a checkpoint whenever the recording crosses a multiple of
+     * {@code interval}. Loading a saved session goes through here, so every load re-proves that
+     * the log alone is enough.
+     *
+     * @param onCheckpoint called with each rebuilt checkpoint, e.g. to verify it against a stored copy
+     */
+    public static Timeline replay(FacilityMap map, EventLog log, long headTick, int interval,
+                                  java.util.function.Consumer<WorldSnapshot> onCheckpoint) {
+        if (interval < 1) {
+            throw new IllegalArgumentException("interval must be positive");
+        }
+        SnapshotStore snapshots = new SnapshotStore();
+        WorldState state = WorldState.initial(map);
+        long nextCheckpoint = 0;
+        for (long seq = 0; seq < log.size(); seq++) {
+            var record = log.get(seq);
+            while (record.tick() > nextCheckpoint && nextCheckpoint <= headTick) {
+                checkpoint(state, nextCheckpoint, snapshots, onCheckpoint);
+                nextCheckpoint += interval;
+            }
+            state.apply(record);
+        }
+        while (nextCheckpoint <= headTick) {
+            checkpoint(state, nextCheckpoint, snapshots, onCheckpoint);
+            nextCheckpoint += interval;
+        }
+        return new Timeline(log, snapshots, headTick);
+    }
+
+    private static void checkpoint(WorldState state, long tick, SnapshotStore snapshots,
+                                   java.util.function.Consumer<WorldSnapshot> onCheckpoint) {
+        state.advanceTo(Math.max(state.tick(), tick));
+        WorldSnapshot snap = state.snapshot();
+        snapshots.put(snap);
+        onCheckpoint.accept(snap);
+    }
+
     public EventLog log() {
         return log;
     }

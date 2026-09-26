@@ -51,6 +51,17 @@ class WorldStateTest {
     }
 
     @Test
+    void aMoveThatDoesNotStartWhereTheEntityIsIsRejected() {
+        TestWorld w = TestWorld.genesis(2);
+        Entity p = w.person(0);
+        Cell elsewhere = p.position().offset(1, 0);
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                () -> w.emit(new EntityMoved(p.id(), elsewhere, p.position().offset(2, 0))))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("moves " + p.id());
+    }
+
+    @Test
     void aPinnedBadgeIgnoresMovementUntilReleased() {
         TestWorld w = TestWorld.genesis(3);
         Entity p = w.person(0);

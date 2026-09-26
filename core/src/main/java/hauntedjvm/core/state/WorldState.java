@@ -58,6 +58,12 @@ public final class WorldState implements WorldView {
         }
     }
 
+    /** The empty world every timeline starts from, before genesis events are applied. */
+    public static WorldState initial(FacilityMap map) {
+        String firstCamera = map.cameras().stream().filter(c -> !c.hidden()).findFirst().orElseThrow().code();
+        return new WorldState(map, IncidentState.initial(firstCamera));
+    }
+
     /** Rebuilds a state from a snapshot. The result shares the snapshot's immutable entities. */
     public static WorldState restore(FacilityMap map, WorldSnapshot snapshot) {
         WorldState s = new WorldState(map, snapshot.incident());

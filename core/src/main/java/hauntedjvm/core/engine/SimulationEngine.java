@@ -8,7 +8,6 @@ import hauntedjvm.core.event.EventRecord;
 import hauntedjvm.core.event.OperatorEvent.CarriedMemory;
 import hauntedjvm.core.event.OperatorEvent.TimelineRewound;
 import hauntedjvm.core.event.SimEvent;
-import hauntedjvm.core.incident.IncidentState;
 import hauntedjvm.core.state.WorldSnapshot;
 import hauntedjvm.core.state.WorldState;
 import hauntedjvm.core.state.WorldView;
@@ -49,7 +48,7 @@ public final class SimulationEngine {
 
     /** A fresh run: genesis at tick 0, first checkpoint taken immediately after. */
     public static SimulationEngine create(SimulationConfig config, FacilityMap map, List<SimulationSystem> systems) {
-        WorldState state = new WorldState(map, IncidentState.initial(firstCamera(map)));
+        WorldState state = WorldState.initial(map);
         SimulationEngine engine = new SimulationEngine(config, map, systems, Timeline.empty(), state);
         FacilityGenesis.populate(engine.context);
         engine.timeline.snapshots().put(state.snapshot());
@@ -156,10 +155,6 @@ public final class SimulationEngine {
     /** Wall-clock cost of the most recent step, for the SIMULATION telemetry panel. */
     public long lastStepNanos() {
         return lastStepNanos;
-    }
-
-    private static String firstCamera(FacilityMap map) {
-        return map.cameras().stream().filter(c -> !c.hidden()).findFirst().orElseThrow().code();
     }
 
     /** The engine's view of itself handed to systems. Delegates so rewinds swap state transparently. */

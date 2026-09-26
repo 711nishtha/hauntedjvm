@@ -61,7 +61,10 @@ final class EventApplier {
                 }
                 state.put(e.entity());
             }
-            case EntityEvent.EntityMoved e -> update(e.id(), x -> x.withPosition(e.to(), reportedAfterMove(x, e.to())));
+            case EntityEvent.EntityMoved e -> update(e.id(), x -> {
+                requireAt(x, e.from(), r);
+                return x.withPosition(e.to(), reportedAfterMove(x, e.to()));
+            });
             case EntityEvent.EntityStateChanged e -> update(e.id(), x -> e.to() == EntityState.MISSING
                     ? x.withState(e.to()).withPosition(null, x.reportedPosition())
                     : x.withState(e.to()));
@@ -130,7 +133,10 @@ final class EventApplier {
             case EnvironmentEvent.CameraStatusChanged e -> update(e.camera(), x -> x
                     .withFacet(((CameraFacet) x.facet()).withStatus(e.status(), e.timelineOffset(), e.until()))
                     .withState(cameraState(e.status())));
-            case EnvironmentEvent.ObjectDisplaced e -> update(e.object(), x -> x.withPosition(e.to(), e.to()));
+            case EnvironmentEvent.ObjectDisplaced e -> update(e.object(), x -> {
+                requireAt(x, e.from(), r);
+                return x.withPosition(e.to(), e.to());
+            });
             case EnvironmentEvent.RoomRevealed e -> update(e.room(),
                     x -> x.withFacet(((RoomFacet) x.facet()).revealed()));
         }
@@ -190,6 +196,18 @@ final class EventApplier {
     }
 
     // ---- helpers ------------------------------------------------------------------------------
+
+    /**
+     * The one consistency check the applier does make: a move must start where the entity is.
+     * The engine always records it that way, so a log that disagrees has been damaged or edited,
+     * and replaying it would quietly show a different history.
+     */
+    private static void requireAt(Entity e, Cell from, EventRecord r) {
+        if (!java.util.Objects.equals(e.position(), from)) {
+            throw new IllegalStateException("record " + r.seq() + " moves " + e.id() + " from " + from
+                    + " but it is at " + e.position());
+        }
+    }
 
     private Cell reportedAfterMove(Entity e, Cell to) {
         if (!e.tracked()) {
