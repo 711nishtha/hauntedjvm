@@ -1,0 +1,69 @@
+# FACILITY-07 — night shift floor plan. One character is one 1m x 1m cell.
+#
+#   '#' wall        '+' door          '=' sealed door (behaves as wall until unsealed)
+#   '*' terminal    letters/'%'       room interiors, declared by the 'room' lines below
+#
+# room <glyph> <code> <ROOM|CORRIDOR|HIDDEN> <label...>
+# camera <code> <room glyph> <mount corner NW|NE|SW|SE> [hidden]
+
+room A ROOM-01 ROOM SECURITY OFFICE
+room H ROOM-02 ROOM BREAK ROOM
+room C ROOM-03 ROOM SERVER HALL
+room B ROOM-04 ROOM TAPE ARCHIVE
+room D ROOM-05 ROOM RECORDS
+room E ROOM-06 ROOM GENERATOR
+room F ROOM-07 ROOM LAB A
+room G ROOM-08 ROOM LAB B
+room I ROOM-09 ROOM DORMITORY
+room J ROOM-10 ROOM INFIRMARY
+room K ROOM-11 ROOM STORAGE
+room L ROOM-12 ROOM LOADING BAY
+room n CORRIDOR-N CORRIDOR NORTH CORRIDOR
+room s CORRIDOR-S CORRIDOR SOUTH CORRIDOR
+room v SHAFT-C CORRIDOR SERVICE SHAFT
+room % ROOM-00 HIDDEN UNLISTED
+
+camera CAM-01 n NW
+camera CAM-02 C NE
+camera CAM-03 B NW
+camera CAM-04 H SE
+camera CAM-05 F NE
+camera CAM-06 I NW
+camera CAM-07 s SE
+camera CAM-08 L NW
+camera CAM-00 % NW hidden
+
+map
+################################################################
+#AAAAAAAAA#BBBBBBBBBBB#CCCCCCCCCCCCCCC#DDDDDDDDD#%%%%%#EEEEEEEE#
+#AA*AAA*AA#BB*BBBBBBBB#CC*CCC*CCC*CCCC#DD*DDDDDD#%%%%%#EEEEE*EE#
+#AAAAAAAAA#BBBBBBBBBBB#CCCCCCCCCCCCCCC#DDDDDDDDD#%%%%%#EEEEEEEE#
+#AAAAAAAAA#BBBBBBBBBBB#CCCCCCCCCCCCCCC#DDDDDDDDD#%%%%%#EEEEEEEE#
+#AAAAAAAAA#BBBBBBBBBBB#CCCCCCCCCCCCCCC#DDDDDDDDD#%%%%%#EEEEEEEE#
+#AAAAAAAAA#BBBBBBBB*BB#CC*CCCCCCCCC*CC#DDDDDD*DD#%%%%%#EEEEEEEE#
+#AAAAAAAAA#BBBBBBBBBBB#CCCCCCCCCCCCCCC#DDDDDDDDD#%%%%%#EEEEEEEE#
+#####+##########+##########+#####+#########+#######=######+#####
+#nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn#
+#nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn#
+#nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn#
+######+#############+######vvv#######+################+#########
+#FFFFFFFFFFFF#GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FF*FFFFFFFFF#GG*GGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FFFFFFFFFFFF#GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FFFFFFFFFFFF#GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH+IIIIIIIIIIIIIIIII#
+#FFFFFFFFFFFF+GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FFFFFFFFFFFF#GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FFFFFFFFF*FF#GGGGGGGGG*GG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+#FFFFFFFFFFFF#GGGGGGGGGGGG#vvv#HHHHHHHHHHHHHH#IIIIIIIIIIIIIIIII#
+########+##################vvv##########+#########+#############
+#ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss#
+#ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss#
+#ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss#
+#######+###############+################+##############+########
+#JJJJJJJJJJJJJJ#KKKKKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+#JJ*JJJJJJJJJJJ#KKKKKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+#JJJJJJJJJJJJJJ#KKKKKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+#JJJJJJJJJJJJJJ#KKKKKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+#JJJJJJJJJJJJJJ#KK*KKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+#JJJJJJJJJJJJJJ#KKKKKKKKKKKKKKK#LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL#
+################################################################
