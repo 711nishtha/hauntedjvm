@@ -8,6 +8,7 @@ description = "JMH benchmarks: tick throughput, entity scaling, event apply, rec
 dependencies {
     jmh(project(":core"))
     jmh(project(":persistence"))
+    jmh(libs.jackson.databind)
 }
 
 jmh {

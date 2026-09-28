@@ -15,7 +15,10 @@ import hauntedjvm.core.event.EventRecord;
 import hauntedjvm.core.random.Rng;
 import hauntedjvm.core.random.Streams;
 import hauntedjvm.core.state.WorldView;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * What people notice. Everything a mind knows about the world arrives through here, through
@@ -41,11 +44,49 @@ public final class PerceptionSystem implements SimulationSystem {
         return "perception";
     }
 
+    /**
+     * Who is in a room this tick, with people pre-bucketed by when they are due to be noticed.
+     *
+     * <p>A pair (a, b) is considered when {@code (t + 7a + 13b) mod P == 0}. Because 13 is
+     * invertible mod P, that condition picks out exactly one residue class of {@code 13b mod P},
+     * so an observer only has to visit one bucket instead of everyone in the room. Crowded rooms
+     * drop from quadratic to roughly linear work, with identical outcomes.
+     */
+    private static final class Crowd {
+        final List<Entity> unknowns = new ArrayList<>();
+        final List<List<Entity>> due = new ArrayList<>(PERSON_PAIR_PERIOD);
+        int persons;
+
+        Crowd(List<Entity> occupants) {
+            for (int i = 0; i < PERSON_PAIR_PERIOD; i++) {
+                due.add(List.of());
+            }
+            for (Entity e : occupants) {
+                if (e.kind() == EntityKind.UNKNOWN) {
+                    unknowns.add(e);
+                } else if (e.kind() == EntityKind.PERSON) {
+                    persons++;
+                    int key = Math.floorMod(e.id().value() * 13L, PERSON_PAIR_PERIOD);
+                    if (due.get(key).isEmpty()) {
+                        due.set(key, new ArrayList<>());
+                    }
+                    due.get(key).add(e);
+                }
+            }
+        }
+
+        List<Entity> dueFor(Entity observer, long t) {
+            return due.get(Math.floorMod(-(t + observer.id().value() * 7L), PERSON_PAIR_PERIOD));
+        }
+    }
+
     @Override
     public void tick(TickContext ctx) {
         WorldView w = ctx.world();
         long t = ctx.tick();
         List<Entity> objects = w.ofKind(EntityKind.OBJECT);
+        // Nobody moves during perception, so rooms can be indexed once per tick.
+        Map<String, Crowd> crowds = new HashMap<>();
         for (Entity person : w.ofKind(EntityKind.PERSON)) {
             if (!person.present()) {
                 continue;
@@ -54,11 +95,21 @@ public final class PerceptionSystem implements SimulationSystem {
             if (room == null) {
                 continue;
             }
+            Crowd crowd = crowds.computeIfAbsent(room, r -> new Crowd(w.occupants(r)));
             Rng rng = ctx.rng(Streams.PERCEPTION, person.id().value());
             double light = Perception.light(w, room, t);
-            for (Entity other : w.occupants(room)) {
+            for (Entity other : crowd.unknowns) {
+                perceive(ctx, w.entity(person.id()), other, room, light, rng);
+            }
+            // Attention is finite: in a crowd, someone registers at most one new face per tick.
+            // With a normal night shift fewer than one pair is due per tick, so this never binds.
+            long before = ctx.log().nextSeq();
+            for (Entity other : crowd.dueFor(person, t)) {
                 if (!other.id().equals(person.id())) {
                     perceive(ctx, w.entity(person.id()), other, room, light, rng);
+                    if (ctx.log().nextSeq() != before) {
+                        break;
+                    }
                 }
             }
             if ((t + person.id().value()) % OBJECT_PERIOD == 0) {
@@ -69,7 +120,7 @@ public final class PerceptionSystem implements SimulationSystem {
                 }
             }
             if ((t + person.id().value()) % AMBIENT_PERIOD == 0) {
-                ambient(ctx, w.entity(person.id()), room, light);
+                ambient(ctx, w.entity(person.id()), room, light, crowd.persons - 1, !crowd.unknowns.isEmpty());
             }
         }
     }
@@ -161,12 +212,11 @@ public final class PerceptionSystem implements SimulationSystem {
                 seen.seq(), object.name() + " in " + room);
     }
 
-    private void ambient(TickContext ctx, Entity person, String room, double light) {
+    private void ambient(TickContext ctx, Entity person, String room, double light, int others, boolean unknownHere) {
         WorldView w = ctx.world();
         Traits traits = person.mind().traits();
         int level = w.incident().level();
-        int companions = Math.max(0, Perception.personsIn(w, room) - 1);
-        boolean unknownHere = w.occupants(room).stream().anyMatch(e -> e.kind() == EntityKind.UNKNOWN);
+        int companions = Math.max(0, others);
 
         double fear = 0;
         if (light < 0.35) {
