@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build, test and static checks
+        run: ./gradlew check installDist --no-daemon
+      - name: Headless reproducibility
+        shell: bash
+        run: |
+          # The same seed must produce the same history on every OS.
+          ./app/build/install/hauntedjvm/bin/hauntedjvm --headless --seed 0xC0FFEE --ticks 4000 | tee run.txt
+          grep "log digest" run.txt | awk '{print $3}' > digest-${{ matrix.os }}.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.os }}
+          path: digest-${{ matrix.os }}.txt
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: reports-${{ matrix.os }}
+          path: '**/build/reports/'
+
+  cross-platform-determinism:
+    name: identical history on every OS
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: digest-*
+          merge-multiple: true
+      - run: |
+          cat digest-*.txt
+          test "$(sort -u digest-*.txt | wc -l)" -eq 1

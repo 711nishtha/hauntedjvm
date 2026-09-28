@@ -1,0 +1,16 @@
+name: Anomaly or behaviour idea
+description: Propose a new perturbation, detector check or behaviour
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What would happen in the facility, and how would the operator be able to notice it?
+    validations:
+      required: true
+  - type: textarea
+    id: state
+    attributes:
+      label: What state does it read and change?
+      description: Anomalies here must change world state through events, and be detectable as an inconsistency. Cosmetic-only effects are out of scope.

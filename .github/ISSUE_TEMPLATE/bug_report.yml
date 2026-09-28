@@ -1,0 +1,29 @@
+name: Bug report
+description: Something in the workstation or the simulation is broken (not just haunted)
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: input
+    id: seed
+    attributes:
+      label: Seed and tick
+      description: Shown in the header. With these, anyone can replay your night.
+      placeholder: "seed 0x00000000C0FFEE, around 03:14:21"
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands, keys pressed, cameras watched. A saved .hjvm session is even better.
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Windows 11, Temurin 21.0.4, commit abc1234"
+    validations:
+      required: true
