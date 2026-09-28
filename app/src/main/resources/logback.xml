@@ -1,0 +1,31 @@
+<configuration>
+    <!-- Structured key=value pairs via %kvp. Main sets HAUNTEDJVM_LOG_LEVEL (DEBUG with the debug flag). -->
+    <property name="LEVEL" value="${HAUNTEDJVM_LOG_LEVEL:-INFO}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{24} - %msg %kvp%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/.hauntedjvm/logs/hauntedjvm.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${user.home}/.hauntedjvm/logs/hauntedjvm.%i.log</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d{ISO8601} %-5level [%thread] %logger - %msg %kvp%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="javafx" level="WARN"/>
+    <root level="${LEVEL}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

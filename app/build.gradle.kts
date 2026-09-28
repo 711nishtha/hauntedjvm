@@ -26,3 +26,12 @@ application {
     // A modest fixed heap keeps the REAL JVM panel meaningful and GC behaviour stable.
     applicationDefaultJvmArgs = listOf("-Xms256m", "-Xmx1g", "-XX:+UseG1GC")
 }
+
+// Development tool: renders fixed workstation scenes to docs/screenshots for the README.
+tasks.register<JavaExec>("screenshots") {
+    group = "documentation"
+    description = "Renders demo scenes of the workstation to docs/screenshots."
+    mainClass = "hauntedjvm.app.ui.DemoScenes\$Launcher"
+    classpath = sourceSets["main"].runtimeClasspath
+    args(rootProject.file("docs/screenshots").absolutePath)
+}

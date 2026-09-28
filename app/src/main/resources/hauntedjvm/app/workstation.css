@@ -1,0 +1,310 @@
+/*
+ * HAUNTEDJVM workstation. Dark, flat, monospaced, no gradients except where a CRT would have one.
+ * Colour tokens mirror hauntedjvm.app.render.Palette.
+ */
+.root {
+    -hj-bg: #060807;
+    -hj-panel: #0b0e0d;
+    -hj-raised: #101513;
+    -hj-line: #1d2823;
+    -hj-phosphor: #8fd694;
+    -hj-phosphor-dim: #4b7552;
+    -hj-amber: #e3a857;
+    -hj-red: #d0584a;
+    -hj-paper: #e6e2d6;
+    -hj-muted: #6f7872;
+    -fx-background-color: -hj-bg;
+    -fx-font-family: "IBM Plex Mono", "Consolas", "Menlo", monospace;
+    -fx-font-size: 12px;
+    -fx-text-fill: -hj-paper;
+    -fx-focus-color: -hj-phosphor-dim;
+    -fx-faint-focus-color: transparent;
+    -fx-accent: -hj-phosphor-dim;
+    -fx-base: #101513;
+    -fx-control-inner-background: #0b0e0d;
+    -fx-selection-bar: #1f3a27;
+    -fx-selection-bar-non-focused: #172a1e;
+}
+
+.label { -fx-text-fill: -hj-paper; }
+.dim { -fx-text-fill: -hj-muted; }
+.phosphor { -fx-text-fill: -hj-phosphor; }
+.amber { -fx-text-fill: -hj-amber; }
+.alarm { -fx-text-fill: -hj-red; }
+
+.panel {
+    -fx-background-color: -hj-panel;
+    -fx-border-color: -hj-line;
+    -fx-border-width: 0 0 0 0;
+}
+
+.section-title {
+    -fx-font-family: "IBM Plex Mono";
+    -fx-font-weight: 600;
+    -fx-font-size: 10.5px;
+    -fx-text-fill: -hj-muted;
+    -fx-padding: 10 10 4 10;
+}
+
+.section-title-real { -fx-text-fill: -hj-phosphor; }
+.section-title-sim { -fx-text-fill: #7fb7b0; }
+.section-title-fiction { -fx-text-fill: -hj-amber; }
+
+.tag {
+    -fx-font-size: 9.5px;
+    -fx-padding: 1 5 1 5;
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+}
+.tag-real { -fx-text-fill: -hj-phosphor; -fx-border-color: -hj-phosphor-dim; }
+.tag-sim { -fx-text-fill: #7fb7b0; -fx-border-color: #3f5c58; }
+.tag-fiction { -fx-text-fill: -hj-amber; -fx-border-color: #7d5a2c; }
+.tag-alarm { -fx-text-fill: -hj-red; -fx-border-color: #6b2c25; }
+
+.header {
+    -fx-background-color: #090c0b;
+    -fx-border-color: -hj-line;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 6 12 6 12;
+    -fx-spacing: 14;
+}
+.brand {
+    -fx-font-family: "VT323";
+    -fx-font-size: 26px;
+    -fx-text-fill: -hj-phosphor;
+}
+.brand-sub {
+    -fx-font-size: 11px;
+    -fx-text-fill: -hj-muted;
+}
+.clock {
+    -fx-font-family: "VT323";
+    -fx-font-size: 30px;
+    -fx-text-fill: -hj-paper;
+}
+.mode-badge {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-padding: 3 8 3 8;
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+}
+.mode-live { -fx-text-fill: -hj-phosphor; -fx-border-color: -hj-phosphor-dim; }
+.mode-paused { -fx-text-fill: -hj-amber; -fx-border-color: #7d5a2c; }
+.mode-review { -fx-text-fill: #7fb7b0; -fx-border-color: #3f5c58; }
+.mode-error { -fx-text-fill: -hj-red; -fx-border-color: #6b2c25; }
+
+.flat-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -hj-paper;
+    -fx-border-color: -hj-line;
+    -fx-border-width: 1;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-padding: 3 9 3 9;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+.flat-button:hover { -fx-background-color: #13201a; -fx-border-color: -hj-phosphor-dim; }
+.flat-button:pressed { -fx-background-color: #1f3a27; }
+.flat-button:disabled { -fx-opacity: 0.35; }
+.flat-button.danger { -fx-text-fill: -hj-red; -fx-border-color: #6b2c25; }
+.flat-button.danger:hover { -fx-background-color: #2a1512; }
+.flat-button.selected { -fx-background-color: #1a2f21; -fx-border-color: -hj-phosphor; -fx-text-fill: -hj-phosphor; }
+
+.menu-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: -hj-muted;
+    -fx-padding: 2 6 2 6;
+    -fx-font-size: 11px;
+    -fx-cursor: hand;
+}
+.menu-link:hover { -fx-text-fill: -hj-phosphor; }
+
+.transport {
+    -fx-background-color: #090c0b;
+    -fx-border-color: -hj-line;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 5 10 5 10;
+    -fx-spacing: 6;
+}
+.transport-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -hj-paper;
+    -fx-font-size: 13px;
+    -fx-padding: 2 9 2 9;
+    -fx-border-color: -hj-line;
+    -fx-border-radius: 2;
+    -fx-cursor: hand;
+}
+.transport-button:hover { -fx-border-color: -hj-phosphor-dim; -fx-text-fill: -hj-phosphor; }
+.transport-button.active { -fx-text-fill: -hj-phosphor; -fx-border-color: -hj-phosphor; }
+
+.feed-tile {
+    -fx-background-color: transparent;
+    -fx-padding: 5;
+    -fx-spacing: 3;
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.feed-tile:hover { -fx-background-color: #0f1512; }
+.feed-tile.selected { -fx-border-color: -hj-phosphor-dim; -fx-background-color: #0f1813; }
+.feed-code { -fx-font-weight: 600; -fx-font-size: 11px; }
+.feed-room { -fx-font-size: 10px; -fx-text-fill: -hj-muted; }
+
+.roster-row {
+    -fx-padding: 2 8 2 8;
+    -fx-cursor: hand;
+    -fx-spacing: 6;
+}
+.roster-row:hover { -fx-background-color: #0f1512; }
+.roster-row.selected { -fx-background-color: #13241a; }
+
+.tab-strip {
+    -fx-background-color: #090c0b;
+    -fx-border-color: -hj-line;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 0;
+}
+.tab-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -hj-muted;
+    -fx-font-size: 10.5px;
+    -fx-font-weight: 600;
+    -fx-padding: 7 11 7 11;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+.tab-button:hover { -fx-text-fill: -hj-paper; }
+.tab-button.selected { -fx-text-fill: -hj-phosphor; -fx-border-color: -hj-phosphor; }
+
+.kv-key { -fx-text-fill: -hj-muted; -fx-font-size: 11px; }
+.kv-value { -fx-text-fill: -hj-paper; -fx-font-size: 11px; }
+.kv-value.bad { -fx-text-fill: -hj-red; }
+.kv-value.warn { -fx-text-fill: -hj-amber; }
+
+.inspector-title {
+    -fx-font-family: "VT323";
+    -fx-font-size: 28px;
+    -fx-text-fill: -hj-paper;
+}
+.inspector-kind { -fx-font-size: 10.5px; -fx-text-fill: -hj-muted; }
+.memory-row { -fx-padding: 3 0 3 0; -fx-border-color: #141c18; -fx-border-width: 0 0 1 0; }
+.memory-time { -fx-font-size: 10.5px; -fx-text-fill: -hj-muted; }
+.memory-note { -fx-font-size: 11px; -fx-text-fill: -hj-paper; -fx-wrap-text: true; }
+.link { -fx-text-fill: #7fb7b0; -fx-cursor: hand; -fx-underline: false; }
+.link:hover { -fx-underline: true; }
+
+.list-view {
+    -fx-background-color: -hj-panel;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 1 8 1 8;
+    -fx-text-fill: -hj-paper;
+    -fx-font-size: 11px;
+}
+.list-cell:filled:hover { -fx-background-color: #0f1512; }
+.list-cell:filled:selected { -fx-background-color: #16271c; }
+
+.text-field, .text-area {
+    -fx-background-color: #0a0d0c;
+    -fx-text-fill: -hj-paper;
+    -fx-prompt-text-fill: #4a524d;
+    -fx-border-color: -hj-line;
+    -fx-border-radius: 2;
+    -fx-background-radius: 2;
+    -fx-highlight-fill: #1f3a27;
+    -fx-highlight-text-fill: -hj-paper;
+}
+.text-area .content { -fx-background-color: #0a0d0c; }
+.text-field:focused, .text-area:focused { -fx-border-color: -hj-phosphor-dim; }
+
+.check-box { -fx-text-fill: -hj-muted; -fx-font-size: 10.5px; }
+.check-box .box { -fx-background-color: #0a0d0c; -fx-border-color: -hj-line; -fx-border-radius: 1; }
+.check-box:selected .mark { -fx-background-color: -hj-phosphor; }
+.check-box:selected { -fx-text-fill: -hj-paper; }
+
+.split-pane { -fx-background-color: -hj-bg; -fx-padding: 0; -fx-background-insets: 0; }
+.split-pane > .split-pane-divider { -fx-background-color: -hj-line; -fx-padding: 0 1 0 0; }
+.split-pane:horizontal > .split-pane-divider { -fx-padding: 0 1 0 0; }
+.split-pane:vertical > .split-pane-divider { -fx-padding: 1 0 0 0; }
+
+.scroll-pane { -fx-background-color: transparent; -fx-background: -hj-panel; -fx-padding: 0; }
+.scroll-pane > .viewport { -fx-background-color: -hj-panel; }
+.scroll-bar { -fx-background-color: transparent; -fx-pref-width: 8; -fx-pref-height: 8; }
+.scroll-bar .thumb { -fx-background-color: #1f2a25; -fx-background-radius: 4; }
+.scroll-bar .thumb:hover { -fx-background-color: #2f4036; }
+.scroll-bar .increment-button, .scroll-bar .decrement-button { -fx-padding: 0; -fx-pref-height: 0; -fx-pref-width: 0; }
+.scroll-bar .increment-arrow, .scroll-bar .decrement-arrow { -fx-shape: " "; -fx-padding: 0; }
+.corner { -fx-background-color: transparent; }
+
+.tooltip {
+    -fx-background-color: #0e1311;
+    -fx-text-fill: -hj-paper;
+    -fx-border-color: -hj-phosphor-dim;
+    -fx-font-size: 11px;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+.overlay-card {
+    -fx-background-color: rgba(6, 8, 7, 0.94);
+    -fx-border-color: -hj-phosphor-dim;
+    -fx-border-width: 1;
+    -fx-padding: 24;
+    -fx-spacing: 10;
+}
+.overlay-title { -fx-font-family: "VT323"; -fx-font-size: 40px; -fx-text-fill: -hj-phosphor; }
+.overlay-text { -fx-font-size: 12px; -fx-text-fill: -hj-paper; }
+.boot-line { -fx-font-family: "IBM Plex Mono"; -fx-font-size: 13px; -fx-text-fill: -hj-phosphor; }
+.key-cap {
+    -fx-font-size: 10.5px;
+    -fx-text-fill: -hj-paper;
+    -fx-border-color: #3a4a40;
+    -fx-border-radius: 2;
+    -fx-padding: 0 5 0 5;
+    -fx-min-width: 28;
+    -fx-alignment: center;
+}
+
+.toast {
+    -fx-background-color: rgba(10, 14, 12, 0.95);
+    -fx-border-color: -hj-line;
+    -fx-border-width: 1 1 1 3;
+    -fx-padding: 6 12 6 10;
+    -fx-font-size: 11px;
+}
+.toast-ok { -fx-border-color: -hj-line -hj-line -hj-line -hj-phosphor; }
+.toast-warn { -fx-border-color: -hj-line -hj-line -hj-line -hj-amber; }
+.toast-bad { -fx-border-color: -hj-line -hj-line -hj-line -hj-red; }
+
+.banner {
+    -fx-font-family: "VT323";
+    -fx-font-size: 44px;
+    -fx-padding: 8 22 8 22;
+    -fx-background-color: rgba(6, 8, 7, 0.88);
+    -fx-border-width: 1 0 1 0;
+}
+
+.dialog-pane { -fx-background-color: -hj-panel; -fx-border-color: -hj-phosphor-dim; }
+.dialog-pane > .content .label { -fx-text-fill: -hj-paper; }
+.dialog-pane .header-panel { -fx-background-color: #090c0b; }
+.dialog-pane .header-panel .label { -fx-text-fill: -hj-phosphor; -fx-font-size: 13px; }
+.dialog-pane .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -hj-paper;
+    -fx-border-color: -hj-line;
+    -fx-border-radius: 2;
+}
+.dialog-pane .button:hover { -fx-border-color: -hj-phosphor-dim; }
+.dialog-pane .button:default { -fx-text-fill: -hj-phosphor; -fx-border-color: -hj-phosphor-dim; }
+.context-menu { -fx-background-color: #0e1311; -fx-border-color: -hj-line; }
+.menu-item .label { -fx-text-fill: -hj-paper; }
+.menu-item:focused { -fx-background-color: #16271c; }
