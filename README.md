@@ -104,18 +104,18 @@ flowchart LR
     Log[("append-only<br/>event log")]
     State["WorldState<br/>(immutable entity records)"]
     Snap[("checkpoints")]
-    Systems -- emit --> Log
-    Log -- apply --> State
-    State -- read --> Systems
-    State -- every N ticks --> Snap
+    Systems -- "emit" --> Log
+    Log -- "apply" --> State
+    State -- "read" --> Systems
+    State -- "every N ticks" --> Snap
   end
   Runner["SimulationRunner<br/>(one platform thread)"] --> core
   Runner -- "Frame (AtomicReference)" --> UI["JavaFX workstation"]
   UI -- "commands (bounded queue)" --> Runner
-  UI -- ReplayCursor --> Snap
+  UI -- "ReplayCursor" --> Snap
   Persistence["persistence<br/>(.hjvm archives)"] --> Log
   Diagnostics["diagnostics<br/>(MXBeans, JFR)"] --> UI
-  Audio["audio<br/>(synthesis thread)"] <-- mood, cues --- UI
+  Audio["audio<br/>(synthesis thread)"] <-- "mood, cues" --> UI
 ```
 
 | Module | Responsibility | Depends on |
